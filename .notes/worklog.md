@@ -59,6 +59,11 @@
 - "Person"/"Capacity" headers given a &nbsp; sub-line so they align with the two-line week headers.
 - Confirmed ISO week math: 2025-12-29 (Mon) is ISO week 1 of 2026 because ISO week 1 is the week containing the first Thursday of the year (2026-01-01). The week before is week 52. Keeping ISO numbering and noting it in DECISIONS; a 1-based index from the range start would misalign with calendar reality across the year.
 
+## UI refinements (round 5)
+
+- Person/Capacity headers top-aligned (vertical-align: top) so their labels sit level with the "Week N" line instead of sinking to the bottom of the two-line header cells.
+- Noticed the seed's i18n names (אורי לוי, نور الحسن, 田中 陽子, 김민준, Νguyễn…). These are internationalization stress data, not a sorting trap: Postgres `ORDER BY name` returns one consistent order and the client preserves it; RTL runs (Hebrew/Arabic) render RTL inside their cells but the row order is fine. Search is case-insensitive per Unicode simple folding, which is enough here. Noted as a DECISIONS talking point.
+
 ## Notes to self
 
 - docker.exe not on PATH in shell: `C:\Users\dylan\AppData\Local\Programs\DockerDesktop\resources\bin\docker.exe` + `docker-credential-desktop.exe` on PATH fixes `compose up --build`.
