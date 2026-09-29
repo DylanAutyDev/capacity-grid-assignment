@@ -105,8 +105,10 @@ td {
   vertical-align: bottom;
 }
 
-.capacity-grid thead .sticky-col {
+.capacity-grid thead .sticky-col,
+.capacity-grid thead .sticky-cap {
   text-align: left;
+  vertical-align: top;
 }
 
 .th-sub {
