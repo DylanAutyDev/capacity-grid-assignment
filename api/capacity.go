@@ -59,11 +59,11 @@ func (s *server) handleCapacity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if to.Before(from) {
-		http.Error(w, "'to' must not be before 'from'", http.StatusBadRequest)
+		http.Error(w, "the 'from' date must be on or before the 'to' date", http.StatusBadRequest)
 		return
 	}
 	if to.Sub(from) > maxRangeDays*24*time.Hour {
-		http.Error(w, "range too large (max 2 years)", http.StatusBadRequest)
+		http.Error(w, "the date range is too large (maximum 2 years)", http.StatusBadRequest)
 		return
 	}
 

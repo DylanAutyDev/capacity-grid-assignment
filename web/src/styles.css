@@ -51,7 +51,8 @@ td {
   opacity: 0.85;
 }
 
-.grid-toolbar button {
+.grid-toolbar button,
+.grid-toolbar input[type='date'] {
   font: inherit;
   font-size: 0.85rem;
   padding: 0.3rem 0.7rem;
@@ -59,6 +60,8 @@ td {
   border-radius: 6px;
   background: transparent;
   cursor: pointer;
+  height: 2.1rem;
+  box-sizing: border-box;
 }
 
 .grid-toolbar button:hover {
@@ -85,11 +88,8 @@ td {
   vertical-align: bottom;
 }
 
-.th-sub {
-  display: block;
-  font-weight: 400;
-  opacity: 0.55;
-  font-size: 0.75rem;
+.capacity-grid thead .sticky-col {
+  text-align: left;
 }
 
 .sticky-col {

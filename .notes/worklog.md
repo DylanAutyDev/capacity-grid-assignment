@@ -33,6 +33,13 @@
 
 - Headless Edge dump of http://localhost:3000 shows the rendered grid: people rows, week headers, over-allocation cell (Eli 4/0), no stuck loading state.
 
+## UI refinements (after first look)
+
+- Week headers simplified from "w/c 2025-12-29 – 2026-01-04" to "w/c 29 Dec 2025" with the full ISO range in the title tooltip — end dates were noise since weeks are always Mon–Sun.
+- Person header left-aligned to match its column; date inputs given the same height/padding/font as the toolbar buttons.
+- Inverted range (from > to): API message made specific; the grid detects it client-side and shows a notice with a "Move 'to' after 'from'" button that resets `to` = from + 28 days instead of a generic 400. Server-side validation kept as the source of truth.
+- Vite dev server inside the container didn't pick up host-side edits (file watcher); a `compose restart web` fixed serving stale modules.
+
 ## Notes to self
 
 - docker.exe not on PATH in shell: `C:\Users\dylan\AppData\Local\Programs\DockerDesktop\resources\bin\docker.exe` + `docker-credential-desktop.exe` on PATH fixes `compose up --build`.

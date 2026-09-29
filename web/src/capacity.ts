@@ -32,6 +32,15 @@ export function addDays(iso: string, days: number): string {
   return formatISODate(d)
 }
 
+export function formatWeekStart(iso: string): string {
+  const d = parseISODate(iso)
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+}
+
+export function isRangeInverted(from: string, to: string): boolean {
+  return parseISODate(from).getTime() > parseISODate(to).getTime()
+}
+
 export function previousWeek(from: string, to: string): { from: string; to: string } {
   return { from: addDays(from, -7), to: addDays(to, -7) }
 }

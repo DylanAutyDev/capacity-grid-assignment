@@ -8,7 +8,9 @@ import {
 import {
   addDays,
   formatHours,
+  formatWeekStart,
   isOverAllocated,
+  isRangeInverted,
   parseWeeklyHoursInput,
   type CapacityResponse,
   type Person,
@@ -30,12 +32,17 @@ type Toast = {
 
 let toastSeq = 0
 
+type LoadError = {
+  message: string
+  fixable: boolean
+}
+
 export function CapacityGrid({ from, to }: Props) {
   const [range, setRange] = useState({ from, to })
   const [weeks, setWeeks] = useState<string[]>([])
   const [people, setPeople] = useState<Person[]>([])
   const [loading, setLoading] = useState(true)
-  const [loadError, setLoadError] = useState<string | null>(null)
+  const [loadError, setLoadError] = useState<LoadError | null>(null)
   const [editing, setEditing] = useState<{ personId: number; draft: string } | null>(null)
   const [toast, setToast] = useState<Toast | null>(null)
   const [reloadKey, setReloadKey] = useState(0)
@@ -45,11 +52,23 @@ export function CapacityGrid({ from, to }: Props) {
     let cancelled = false
     setLoading(true)
     setLoadError(null)
+
+    if (isRangeInverted(range.from, range.to)) {
+      setLoading(false)
+      setLoadError({
+        message: "The 'from' date is after the 'to' date.",
+        fixable: true,
+      })
+      return
+    }
+
     const url = `/api/capacity?from=${range.from}&to=${range.to}`
     fetch(url)
       .then((res) => {
         if (!res.ok) {
-          throw new Error(`request failed (${res.status})`)
+          return res.text().then((body) => {
+            throw new Error(body || `request failed (${res.status})`)
+          })
         }
         return res.json() as Promise<CapacityResponse>
       })
@@ -61,7 +80,10 @@ export function CapacityGrid({ from, to }: Props) {
       })
       .catch((err: unknown) => {
         if (cancelled) return
-        setLoadError(err instanceof Error ? err.message : 'request failed')
+        setLoadError({
+          message: err instanceof Error ? err.message : 'request failed',
+          fixable: false,
+        })
         setLoading(false)
       })
     return () => {
@@ -199,10 +221,22 @@ export function CapacityGrid({ from, to }: Props) {
 
       {loadError && (
         <p className="notice notice-error">
-          Couldn't load capacity: {loadError}.{' '}
-          <button type="button" onClick={() => setReloadKey((k) => k + 1)}>
-            Retry
-          </button>
+          {loadError.message}{' '}
+          {loadError.fixable ? (
+            <button
+              type="button"
+              onClick={() => {
+                setLoadError(null)
+                setRange((r) => ({ ...r, to: addDays(r.from, 28) }))
+              }}
+            >
+              Move 'to' after 'from'
+            </button>
+          ) : (
+            <button type="button" onClick={() => setReloadKey((k) => k + 1)}>
+              Retry
+            </button>
+          )}
         </p>
       )}
       {loading && <p className="notice">Loading…</p>}
@@ -213,9 +247,8 @@ export function CapacityGrid({ from, to }: Props) {
             <tr>
               <th className="sticky-col sticky-head">Person</th>
               {weeks.map((w) => (
-                <th key={w}>
-                  w/c {w}
-                  <span className="th-sub">– {addDays(w, 6)}</span>
+                <th key={w} title={`${w} to ${addDays(w, 6)}`}>
+                  w/c {formatWeekStart(w)}
                 </th>
               ))}
             </tr>

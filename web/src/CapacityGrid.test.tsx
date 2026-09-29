@@ -45,9 +45,24 @@ describe('CapacityGrid', () => {
     render(<CapacityGrid from="2025-12-29" to="2026-01-16" />)
 
     await waitFor(() => expect(screen.getAllByText('Ana Ferreira').length).toBeGreaterThan(0))
-    expect(screen.getByText(/w\/c 2025-12-29/)).toBeInTheDocument()
+    expect(screen.getByText(/w\/c 29 Dec 2025/)).toBeInTheDocument()
     expect(screen.getByText('Eli Nakamura')).toBeInTheDocument()
     expect(screen.getAllByText('8').length).toBeGreaterThan(0)
+  })
+
+  it('shows a fix action when the range is inverted and recovers when applied', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => payload })
+    vi.stubGlobal('fetch', fetchMock)
+    const { rerender } = render(<CapacityGrid from="2026-01-16" to="2025-12-29" />)
+
+    await waitFor(() =>
+      expect(screen.getByText(/The 'from' date is after the 'to' date/)).toBeInTheDocument(),
+    )
+    expect(fetchMock).not.toHaveBeenCalled()
+
+    fireEvent.click(screen.getByText("Move 'to' after 'from'"))
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1))
+    expect(fetchMock.mock.calls[0][0]).toBe('/api/capacity?from=2026-01-16&to=2026-02-13')
   })
 
   it('shows a retry toast and rolls back when a save fails', async () => {

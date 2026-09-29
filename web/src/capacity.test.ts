@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest'
 import {
   addDays,
   formatHours,
+  formatWeekStart,
   isOverAllocated,
+  isRangeInverted,
   nextWeek,
   parseWeeklyHoursInput,
   previousWeek,
@@ -26,6 +28,17 @@ describe('week navigation', () => {
   it('addDays crosses year and leap boundaries', () => {
     expect(addDays('2026-02-25', 7)).toBe('2026-03-04')
     expect(addDays('2025-12-31', 1)).toBe('2026-01-01')
+  })
+
+  it('detects an inverted range', () => {
+    expect(isRangeInverted('2026-01-16', '2025-12-29')).toBe(true)
+    expect(isRangeInverted('2025-12-29', '2026-01-16')).toBe(false)
+    expect(isRangeInverted('2026-01-16', '2026-01-16')).toBe(false)
+  })
+
+  it('formats week start labels for headers', () => {
+    expect(formatWeekStart('2025-12-29')).toBe('29 Dec 2025')
+    expect(formatWeekStart('2026-01-05')).toBe('5 Jan 2026')
   })
 })
 
