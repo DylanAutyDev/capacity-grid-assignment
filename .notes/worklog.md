@@ -58,7 +58,6 @@
 
 - "Person"/"Capacity" headers given a &nbsp; sub-line so they align with the two-line week headers.
 - Confirmed ISO week math: 2025-12-29 (Mon) is ISO week 1 of 2026 because ISO week 1 is the week containing the first Thursday of the year (2026-01-01). The week before is week 52. Keeping ISO numbering and noting it in DECISIONS; a 1-based index from the range start would misalign with calendar reality across the year.
-
 ## UI refinements (round 5)
 
 - Person/Capacity headers now carry real sub-labels ("name", "hours / week") so all header cells have the same two-line structure and their baselines align.
