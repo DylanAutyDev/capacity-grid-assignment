@@ -30,3 +30,167 @@ td {
   padding: 0.5rem 0.75rem;
   text-align: left;
 }
+
+.grid-wrap {
+  position: relative;
+}
+
+.grid-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.grid-toolbar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.grid-toolbar button {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.grid-toolbar button:hover {
+  border-color: currentColor;
+}
+
+.notice {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: 6px;
+}
+
+.notice-error {
+  color: #d43a3a;
+}
+
+.capacity-grid {
+  width: 100%;
+}
+
+.capacity-grid thead th {
+  white-space: nowrap;
+  text-align: right;
+  vertical-align: bottom;
+}
+
+.th-sub {
+  display: block;
+  font-weight: 400;
+  opacity: 0.55;
+  font-size: 0.75rem;
+}
+
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: Canvas;
+  z-index: 1;
+}
+
+.sticky-head {
+  z-index: 2;
+}
+
+.person-cell {
+  white-space: nowrap;
+  text-align: left;
+}
+
+.person-name {
+  margin-right: 0.5rem;
+}
+
+.hours-button {
+  font: inherit;
+  font-size: 0.8rem;
+  padding: 0.15rem 0.45rem;
+  border: 1px dashed color-mix(in srgb, currentColor 40%, transparent);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+
+.hours-button:hover {
+  border-style: solid;
+}
+
+.hours-input {
+  font: inherit;
+  font-size: 0.8rem;
+  width: 5.5rem;
+  padding: 0.15rem 0.35rem;
+}
+
+.capacity-grid td {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.cell-over {
+  background: color-mix(in srgb, #d43a3a 18%, transparent);
+}
+
+.cell-alloc {
+  font-weight: 600;
+}
+
+.cell-cap {
+  opacity: 0.55;
+  font-size: 0.8rem;
+  margin-left: 0.3rem;
+}
+
+.over-badge {
+  margin-left: 0.35rem;
+  font-size: 0.7rem;
+  color: #d43a3a;
+  vertical-align: middle;
+}
+
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: color-mix(in srgb, #d43a3a 12%, Canvas);
+  border: 1px solid #d43a3a;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.25);
+  max-width: min(90vw, 34rem);
+}
+
+.toast button {
+  font: inherit;
+  font-size: 0.85rem;
+  border: 1px solid color-mix(in srgb, currentColor 40%, transparent);
+  border-radius: 6px;
+  background: transparent;
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+}
+
+.toast-retry {
+  font-weight: 600;
+}
+
+.toast-dismiss {
+  border: none !important;
+  padding: 0.2rem 0.35rem !important;
+}
