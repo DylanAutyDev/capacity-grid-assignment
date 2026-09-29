@@ -52,7 +52,8 @@ td {
 }
 
 .grid-toolbar button,
-.grid-toolbar input[type='date'] {
+.grid-toolbar input[type='date'],
+.grid-toolbar input[type='search'] {
   font: inherit;
   font-size: 0.85rem;
   padding: 0.3rem 0.7rem;
@@ -64,8 +65,24 @@ td {
   box-sizing: border-box;
 }
 
+.grid-toolbar input[type='search'] {
+  width: 11rem;
+}
+
 .grid-toolbar button:hover {
   border-color: currentColor;
+}
+
+.toolbar-search {
+  margin-left: auto;
+}
+
+.toolbar-check {
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
 }
 
 .notice {
@@ -99,6 +116,13 @@ td {
   z-index: 1;
 }
 
+.sticky-cap {
+  position: sticky;
+  left: 10.5rem;
+  background: Canvas;
+  z-index: 1;
+}
+
 .sticky-head {
   z-index: 2;
 }
@@ -106,10 +130,13 @@ td {
 .person-cell {
   white-space: nowrap;
   text-align: left;
+  min-width: 10.5rem;
 }
 
-.person-name {
-  margin-right: 0.5rem;
+.capacity-cell {
+  text-align: right;
+  white-space: nowrap;
+  min-width: 5.5rem;
 }
 
 .hours-button {
@@ -139,25 +166,31 @@ td {
   white-space: nowrap;
 }
 
+.capacity-grid tbody td {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
 .cell-over {
   background: color-mix(in srgb, #d43a3a 18%, transparent);
 }
 
-.cell-alloc {
-  font-weight: 600;
-}
-
-.cell-cap {
-  opacity: 0.55;
-  font-size: 0.8rem;
-  margin-left: 0.3rem;
-}
-
-.over-badge {
+.over-mark {
   margin-left: 0.35rem;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: #d43a3a;
   vertical-align: middle;
+}
+
+.grid-legend {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+.grid-legend em {
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
 }
 
 .toast {

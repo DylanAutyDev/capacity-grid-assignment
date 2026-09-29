@@ -40,6 +40,13 @@
 - Inverted range (from > to): API message made specific; the grid detects it client-side and shows a notice with a "Move 'to' after 'from'" button that resets `to` = from + 28 days instead of a generic 400. Server-side validation kept as the source of truth.
 - Vite dev server inside the container didn't pick up host-side edits (file watcher); a `compose restart web` fixed serving stale modules.
 
+## UI refinements (round 2)
+
+- Capacity moved out of each week cell into its own sticky "Capacity" column after "Person"; week cells now show only allocated hours with a red ● marker + tint for over-allocation (replaced the confusing ▲ arrow).
+- Added name search ("Search by name…") and an "Only over capacity" checkbox; both filter client-side over the fetched roster.
+- Footnote legend under the grid: "● allocated exceeds capacity · w/c = week commencing".
+- Tests: 14 passing (added search filter, over-capacity filter, inverted-range fix action).
+
 ## Notes to self
 
 - docker.exe not on PATH in shell: `C:\Users\dylan\AppData\Local\Programs\DockerDesktop\resources\bin\docker.exe` + `docker-credential-desktop.exe` on PATH fixes `compose up --build`.

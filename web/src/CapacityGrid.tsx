@@ -46,6 +46,8 @@ export function CapacityGrid({ from, to }: Props) {
   const [editing, setEditing] = useState<{ personId: number; draft: string } | null>(null)
   const [toast, setToast] = useState<Toast | null>(null)
   const [reloadKey, setReloadKey] = useState(0)
+  const [query, setQuery] = useState('')
+  const [onlyOver, setOnlyOver] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -192,6 +194,13 @@ export function CapacityGrid({ from, to }: Props) {
     }))
   }
 
+  const q = query.trim().toLowerCase()
+  const visiblePeople = people.filter(
+    (p) =>
+      (q === '' || p.name.toLowerCase().includes(q)) &&
+      (!onlyOver || weeks.some((w) => isOverAllocated(p.allocations[w] ?? 0, p.weeklyHours))),
+  )
+
   return (
     <div className="grid-wrap">
       <div className="grid-toolbar">
@@ -217,6 +226,24 @@ export function CapacityGrid({ from, to }: Props) {
         <button type="button" onClick={() => moveBy(7)}>
           Next week →
         </button>
+        <label className="toolbar-search">
+          <input
+            type="search"
+            placeholder="Search by name…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            aria-label="Search by name"
+          />
+        </label>
+        <label className="toolbar-check">
+          <input
+            type="checkbox"
+            checked={onlyOver}
+            onChange={(e) => setOnlyOver(e.target.checked)}
+            aria-label="Only over capacity"
+          />
+          Only over capacity
+        </label>
       </div>
 
       {loadError && (
@@ -242,64 +269,76 @@ export function CapacityGrid({ from, to }: Props) {
       {loading && <p className="notice">Loading…</p>}
 
       {!loading && !loadError && (
-        <table className="capacity-grid">
-          <thead>
-            <tr>
-              <th className="sticky-col sticky-head">Person</th>
-              {weeks.map((w) => (
-                <th key={w} title={`${w} to ${addDays(w, 6)}`}>
-                  w/c {formatWeekStart(w)}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {people.map((p) => (
-              <tr key={p.id}>
-                <th scope="row" className="sticky-col person-cell">
-                  <span className="person-name">{p.name}</span>
-                  {editing?.personId === p.id ? (
-                    <input
-                      ref={inputRef}
-                      className="hours-input"
-                      type="number"
-                      min={0}
-                      max={168}
-                      step="any"
-                      value={editing.draft}
-                      onChange={(e) =>
-                        setEditing({ personId: p.id, draft: e.target.value })
-                      }
-                      onBlur={commitEditing}
-                      onKeyDown={onKeyDown}
-                      aria-label={`Weekly hours for ${p.name}`}
-                    />
-                  ) : (
-                    <button
-                      type="button"
-                      className="hours-button"
-                      onClick={() => startEditing(p)}
-                      title={`Edit ${p.name}'s weekly hours`}
-                    >
-                      {formatHours(p.weeklyHours)}h/w
-                    </button>
-                  )}
-                </th>
-                {weeks.map((w) => {
-                  const allocated = p.allocations[w] ?? 0
-                  const over = isOverAllocated(allocated, p.weeklyHours)
-                  return (
-                    <td key={w} className={over ? 'cell-over' : ''}>
-                      <span className="cell-alloc">{formatHours(allocated)}</span>
-                      <span className="cell-cap">/ {formatHours(p.weeklyHours)}</span>
-                      {over && <span className="over-badge" title="Over allocated">▲</span>}
-                    </td>
-                  )
-                })}
+        <>
+          <table className="capacity-grid">
+            <thead>
+              <tr>
+                <th className="sticky-col sticky-head">Person</th>
+                <th className="sticky-cap sticky-head">Capacity</th>
+                {weeks.map((w) => (
+                  <th key={w} title={`${w} to ${addDays(w, 6)}`}>
+                    w/c {formatWeekStart(w)}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {visiblePeople.map((p) => (
+                <tr key={p.id}>
+                  <th scope="row" className="sticky-col person-cell">
+                    {p.name}
+                  </th>
+                  <td className="sticky-cap capacity-cell">
+                    {editing?.personId === p.id ? (
+                      <input
+                        ref={inputRef}
+                        className="hours-input"
+                        type="number"
+                        min={0}
+                        max={168}
+                        step="any"
+                        value={editing.draft}
+                        onChange={(e) =>
+                          setEditing({ personId: p.id, draft: e.target.value })
+                        }
+                        onBlur={commitEditing}
+                        onKeyDown={onKeyDown}
+                        aria-label={`Weekly hours for ${p.name}`}
+                      />
+                    ) : (
+                      <button
+                        type="button"
+                        className="hours-button"
+                        onClick={() => startEditing(p)}
+                        title={`Edit ${p.name}'s weekly hours`}
+                      >
+                        {formatHours(p.weeklyHours)}h/w
+                      </button>
+                    )}
+                  </td>
+                  {weeks.map((w) => {
+                    const allocated = p.allocations[w] ?? 0
+                    const over = isOverAllocated(allocated, p.weeklyHours)
+                    return (
+                      <td key={w} className={over ? 'cell-over' : ''}>
+                        {formatHours(allocated)}
+                        {over && (
+                          <span className="over-mark" title="Over allocated">
+                            ●
+                          </span>
+                        )}
+                      </td>
+                    )
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="grid-legend">
+            <span className="over-mark">●</span> allocated exceeds capacity ·{' '}
+            <em>w/c</em> = week commencing
+          </p>
+        </>
       )}
 
       {toast && (

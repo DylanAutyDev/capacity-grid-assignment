@@ -50,6 +50,28 @@ describe('CapacityGrid', () => {
     expect(screen.getAllByText('8').length).toBeGreaterThan(0)
   })
 
+  it('filters people by name search', async () => {
+    mockFetch()
+    render(<CapacityGrid from="2025-12-29" to="2026-01-16" />)
+
+    await waitFor(() => expect(screen.getAllByText('Ana Ferreira').length).toBeGreaterThan(0))
+    fireEvent.change(screen.getByLabelText('Search by name'), { target: { value: 'eli' } })
+
+    await waitFor(() => expect(screen.queryByText('Ana Ferreira')).not.toBeInTheDocument())
+    expect(screen.getByText('Eli Nakamura')).toBeInTheDocument()
+  })
+
+  it('filters to only over-capacity people when checked', async () => {
+    mockFetch()
+    render(<CapacityGrid from="2025-12-29" to="2026-01-16" />)
+
+    await waitFor(() => expect(screen.getAllByText('Ana Ferreira').length).toBeGreaterThan(0))
+    fireEvent.click(screen.getByLabelText('Only over capacity'))
+
+    await waitFor(() => expect(screen.queryByText('Ana Ferreira')).not.toBeInTheDocument())
+    expect(screen.getByText('Eli Nakamura')).toBeInTheDocument()
+  })
+
   it('shows a fix action when the range is inverted and recovers when applied', async () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => payload })
     vi.stubGlobal('fetch', fetchMock)
