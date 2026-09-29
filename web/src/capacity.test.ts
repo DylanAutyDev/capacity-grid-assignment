@@ -5,6 +5,7 @@ import {
   formatWeekStart,
   isOverAllocated,
   isRangeInverted,
+  isoWeekNumber,
   nextWeek,
   parseWeeklyHoursInput,
   previousWeek,
@@ -39,6 +40,12 @@ describe('week navigation', () => {
   it('formats week start labels for headers', () => {
     expect(formatWeekStart('2025-12-29')).toBe('29 Dec 2025')
     expect(formatWeekStart('2026-01-05')).toBe('5 Jan 2026')
+  })
+
+  it('computes ISO week numbers', () => {
+    expect(isoWeekNumber('2025-12-29')).toBe(1)
+    expect(isoWeekNumber('2026-01-05')).toBe(2)
+    expect(isoWeekNumber('2026-01-12')).toBe(3)
   })
 })
 

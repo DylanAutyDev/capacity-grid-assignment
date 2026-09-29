@@ -47,6 +47,13 @@
 - Footnote legend under the grid: "● allocated exceeds capacity · w/c = week commencing".
 - Tests: 14 passing (added search filter, over-capacity filter, inverted-range fix action).
 
+## UI refinements (round 3)
+
+- Dropped the "w/c" prefix. Week headers are now "Week N" (ISO week number) with the start date as a sub-line beneath; full Mon–Sun range stays in the title tooltip. Week numbering by start date is the common convention (ISO 8601).
+- Week cells show "allocated / capacity" again so each cell carries its own limit context; the separate Capacity column remains the editable one.
+- Legend moved to a fixed pill in the top-right corner: "● allocated exceeds capacity".
+- Tests: 15 passing.
+
 ## Notes to self
 
 - docker.exe not on PATH in shell: `C:\Users\dylan\AppData\Local\Programs\DockerDesktop\resources\bin\docker.exe` + `docker-credential-desktop.exe` on PATH fixes `compose up --build`.

@@ -37,6 +37,15 @@ export function formatWeekStart(iso: string): string {
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
+export function isoWeekNumber(iso: string): number {
+  const d = parseISODate(iso)
+  const utc = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()))
+  const day = utc.getUTCDay() || 7
+  utc.setUTCDate(utc.getUTCDate() + 4 - day)
+  const yearStart = new Date(Date.UTC(utc.getUTCFullYear(), 0, 1))
+  return Math.ceil(((utc.getTime() - yearStart.getTime()) / 86400000 + 1) / 7)
+}
+
 export function isRangeInverted(from: string, to: string): boolean {
   return parseISODate(from).getTime() > parseISODate(to).getTime()
 }

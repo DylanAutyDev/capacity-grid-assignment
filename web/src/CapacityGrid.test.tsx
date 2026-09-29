@@ -45,7 +45,8 @@ describe('CapacityGrid', () => {
     render(<CapacityGrid from="2025-12-29" to="2026-01-16" />)
 
     await waitFor(() => expect(screen.getAllByText('Ana Ferreira').length).toBeGreaterThan(0))
-    expect(screen.getByText(/w\/c 29 Dec 2025/)).toBeInTheDocument()
+    expect(screen.getByText('Week 1')).toBeInTheDocument()
+    expect(screen.getByText('29 Dec 2025')).toBeInTheDocument()
     expect(screen.getByText('Eli Nakamura')).toBeInTheDocument()
     expect(screen.getAllByText('8').length).toBeGreaterThan(0)
   })

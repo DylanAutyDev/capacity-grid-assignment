@@ -109,6 +109,13 @@ td {
   text-align: left;
 }
 
+.th-sub {
+  display: block;
+  font-weight: 400;
+  opacity: 0.6;
+  font-size: 0.72rem;
+}
+
 .sticky-col {
   position: sticky;
   left: 0;
@@ -175,6 +182,13 @@ td {
   background: color-mix(in srgb, #d43a3a 18%, transparent);
 }
 
+.cell-cap {
+  opacity: 0.55;
+  font-size: 0.8rem;
+  margin-left: 0.3rem;
+  font-weight: 400;
+}
+
 .over-mark {
   margin-left: 0.35rem;
   font-size: 0.65rem;
@@ -183,14 +197,17 @@ td {
 }
 
 .grid-legend {
-  margin-top: 0.75rem;
-  font-size: 0.8rem;
-  opacity: 0.75;
-}
-
-.grid-legend em {
-  font-style: normal;
-  font-variant-numeric: tabular-nums;
+  position: fixed;
+  top: 0.75rem;
+  right: 1rem;
+  margin: 0;
+  font-size: 0.78rem;
+  opacity: 0.8;
+  background: Canvas;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+  z-index: 3;
 }
 
 .toast {

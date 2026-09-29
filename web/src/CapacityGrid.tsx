@@ -11,6 +11,7 @@ import {
   formatWeekStart,
   isOverAllocated,
   isRangeInverted,
+  isoWeekNumber,
   parseWeeklyHoursInput,
   type CapacityResponse,
   type Person,
@@ -277,7 +278,8 @@ export function CapacityGrid({ from, to }: Props) {
                 <th className="sticky-cap sticky-head">Capacity</th>
                 {weeks.map((w) => (
                   <th key={w} title={`${w} to ${addDays(w, 6)}`}>
-                    w/c {formatWeekStart(w)}
+                    Week {isoWeekNumber(w)}
+                    <span className="th-sub">{formatWeekStart(w)}</span>
                   </th>
                 ))}
               </tr>
@@ -322,6 +324,7 @@ export function CapacityGrid({ from, to }: Props) {
                     return (
                       <td key={w} className={over ? 'cell-over' : ''}>
                         {formatHours(allocated)}
+                        <span className="cell-cap"> / {formatHours(p.weeklyHours)}</span>
                         {over && (
                           <span className="over-mark" title="Over allocated">
                             ●
@@ -335,8 +338,7 @@ export function CapacityGrid({ from, to }: Props) {
             </tbody>
           </table>
           <p className="grid-legend">
-            <span className="over-mark">●</span> allocated exceeds capacity ·{' '}
-            <em>w/c</em> = week commencing
+            <span className="over-mark">●</span> allocated exceeds capacity
           </p>
         </>
       )}
