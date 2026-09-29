@@ -275,10 +275,10 @@ export function CapacityGrid({ from, to }: Props) {
             <thead>
               <tr>
                 <th className="sticky-col sticky-head">
-                  Person<span className="th-sub">&nbsp;</span>
+                  Person<span className="th-sub">name</span>
                 </th>
                 <th className="sticky-cap sticky-head">
-                  Capacity<span className="th-sub">&nbsp;</span>
+                  Capacity<span className="th-sub">hours / week</span>
                 </th>
                 {weeks.map((w) => (
                   <th key={w} title={`${w} to ${addDays(w, 6)}`}>

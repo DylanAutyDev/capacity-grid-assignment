@@ -61,7 +61,7 @@
 
 ## UI refinements (round 5)
 
-- Person/Capacity headers top-aligned (vertical-align: top) so their labels sit level with the "Week N" line instead of sinking to the bottom of the two-line header cells.
+- Person/Capacity headers now carry real sub-labels ("name", "hours / week") so all header cells have the same two-line structure and their baselines align.
 - Noticed the seed's i18n names (אורי לוי, نور الحسن, 田中 陽子, 김민준, Νguyễn…). These are internationalization stress data, not a sorting trap: Postgres `ORDER BY name` returns one consistent order and the client preserves it; RTL runs (Hebrew/Arabic) render RTL inside their cells but the row order is fine. Search is case-insensitive per Unicode simple folding, which is enough here. Noted as a DECISIONS talking point.
 
 ## Notes to self
